@@ -75,4 +75,18 @@ print_queueCL(queue_cl *qu)
   printf("\n");
 }
 
+void
+obliterate_queueCL(queue_cl *qu)
+{
+  node_cl *tmp = qu -> next -> next;
+  while(tmp != qu -> next)
+  {
+    qu -> next -> next = tmp -> next;
+    free(tmp);
+    tmp = qu -> next -> next;
+  }
+  free(qu -> next);
+  free(qu);
+}
+
 

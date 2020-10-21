@@ -82,12 +82,12 @@ rear_elementL(queue_l *qu)
 void
 obliterate_queueL(queue_l *qu)
 {
-  node_ql *tmp = qu -> front;
-  while(tmp != NULL)
+  node_ql *tmp;
+  while(qu -> front != NULL)
   {
-     node_ql *next = tmp -> next;
+     tmp = qu -> front;
+     qu -> front = tmp -> next;
      free(tmp);
-     tmp = next;
   }
   free(qu);
 }
