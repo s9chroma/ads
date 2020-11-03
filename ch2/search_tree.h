@@ -11,4 +11,10 @@ typedef struct tr_n
 tree *
 create_tree(void);
 
+void
+left_rotation(tree_node *n);
+
+void
+right_rotation(tree_node *n);
+
 #endif
