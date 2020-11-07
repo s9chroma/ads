@@ -17,4 +17,10 @@ left_rotation(tree_node *n);
 void
 right_rotation(tree_node *n);
 
+int *
+find(tree *root_node, int query_key);
+
+int *
+find_recur(tree *root_node, int query_key);
+
 #endif
