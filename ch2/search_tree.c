@@ -24,6 +24,21 @@ left_rotation(tree_node *n)
   n -> left -> key = tmp_key;
 }
 
+void
+right_rotation(tree_node *n)
+{
+  tree_node *tmp;
+  int tmp_key;
+  tmp = n -> right;
+  tmp_key = n -> key;
+  n -> right = n -> left;
+  n -> key = n -> left -> key;
+  n -> left = n -> right -> left;
+  n -> right -> left = n -> right -> right;
+  n -> right -> right = tmp;
+  n -> right -> key = tmp_key;
+}
+
 int *
 find(tree *root_node, int query_key)
 {
@@ -48,7 +63,7 @@ find(tree *root_node, int query_key)
 
   if(tmp -> key == query_key)
   {
-    return (int *)(tmp -> left);
+    return 0;
   }
   else
   {
