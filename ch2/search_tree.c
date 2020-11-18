@@ -101,7 +101,7 @@ find_recur(tree *root_node, int query_key)
 int
 insert(tree *root_node, int new_key, int new_object)
 {
-  if(root_node -> left == NULL)
+  if(root_node -> left == NULL) // empty
   {
     root_node -> left = (tree_node *) new_object;
     root_node -> key = new_key;
@@ -156,4 +156,63 @@ insert(tree *root_node, int new_key, int new_object)
   }
 
   return(0);
+}
+
+int *
+delete(tree *root_node, int delete_key)
+{
+  tree_node *tmp_node, *parent_node, *other_node;
+  int *deleted_object;
+
+  if(root_node -> left == NULL) // tree is empty
+  {
+    return(NULL);
+  }
+  if(root_node -> right == NULL) // tree is leaf
+  {
+    if(root_node -> key == delete_key)
+    {
+      deleted_object = (int *) root_node -> left;
+      root_node -> left = NULL;
+      return(deleted_object);
+    }
+    else
+    {
+      return(NULL);
+    }
+  }
+  else // traversing tree
+  {
+    tmp_node = root_node;
+    while(tmp_node -> right != NULL) // until we reach a leaf
+    {
+      parent_node = tmp_node; // storing a pointer to parent node
+      if(delete_key < tmp_node -> key)
+      {
+        tmp_node = parent_node -> left;
+        other_node = parent_node -> right;
+      }
+      else
+      {
+        tmp_node = parent_node -> right;
+        other_node = parent_node -> left;
+      }
+    }
+
+    // reached leaf
+    if(tmp_node -> key != delete_key)
+    {
+      return(NULL);
+    }
+
+    // reached leaf and found key
+
+    parent_node -> key = other_node -> key;
+    parent_node -> left = other_node -> left;
+    parent_node -> right = other_node -> right;
+    int *value_at_key = tmp_node -> left;
+    free(tmp_node);
+    free(other_node);
+    return(value_at_key);
+  }
 }

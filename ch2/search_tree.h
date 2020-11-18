@@ -26,4 +26,7 @@ find_recur(tree *root_node, int query_key);
 int
 insert(tree *root_node, int new_key, int new_object);
 
+int *
+delete(tree *root_node, int delete_key);
+
 #endif
