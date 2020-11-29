@@ -29,4 +29,7 @@ insert(tree *root_node, int new_key, int new_object);
 int *
 delete(tree *root_node, int delete_key);
 
+tree_node *
+interval_find(tree_node *tree, int key_start, int key_end);
+
 #endif

@@ -1,4 +1,5 @@
 #include "search_tree.h"
+#include "stack_tree.h"
 #include <stdlib.h>
 
 tree *
@@ -210,9 +211,55 @@ delete(tree *root_node, int delete_key)
     parent_node -> key = other_node -> key;
     parent_node -> left = other_node -> left;
     parent_node -> right = other_node -> right;
-    int *value_at_key = tmp_node -> left;
+    int *value_at_key = (int *)tmp_node -> left;
     free(tmp_node);
     free(other_node);
     return(value_at_key);
   }
+}
+
+tree_node *
+interval_find(tree_node *tree, int key_start, int key_end)
+{
+  tree_node *tr_node;
+  tree_node *tmp, *result_list;
+  result_list = NULL;
+  stack_tr_l *tree_stack = create_stack_tree();
+  push_tree_stack(tree_stack, tree);
+  while(!empty_stack_tree(tree_stack))
+  {
+    tr_node = pop_tree_stack(tree_stack);
+    if(tr_node -> right == NULL)
+    {
+      /*reached leaf, now test*/
+      tmp = (tree_node *) malloc(sizeof(tree_node));
+      if(key_start <= tr_node -> key && tr_node -> key < b)
+      {
+        /*leaf key is in the interval given*/
+        tmp -> key = tr_node -> key;
+        tmp -> left = tr_node -> left;
+        tmp -> right = result_list;
+        result_list = tmp;
+      }
+    } /* not at the leaf yet, have to go down*/
+    else if(key_end < tr_node -> key)
+    {
+      /*entire left interval*/
+      push_tree_stack(tree_stack, tr_node -> left);
+    }
+    else if(tr_node -> key <= key_start)
+    {
+      /*entire right interval*/
+      push_tree_stack(tree_stack, tr_node -> right);
+    }
+    else
+    {
+      /*node is in the interval, so push both left and right parts*/
+      push_tree_stack(tree_stack, tr_node -> left);
+      push_tree_stack(tree_stack, tr_node -> right);
+    }
+  }
+
+  obliterate_tree_stack(tree_stack);
+  return(result_list);
 }
